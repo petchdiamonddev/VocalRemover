@@ -34,6 +34,12 @@ def download_audio(url: str, work_dir: Path) -> Path:
 
 
 def run_demucs(source: Path, output_dir: Path, model: str, device: str) -> tuple[Path, Path]:
+    # รองรับแพ็กเกจ exe ที่วาง ffmpeg.exe ไว้ข้างตัวโปรแกรม
+    app_dir = Path(getattr(sys, "_MEIPASS", Path(sys.executable).resolve().parent))
+    bundled_ffmpeg = app_dir / "ffmpeg.exe"
+    if bundled_ffmpeg.exists():
+        import os
+        os.environ["PATH"] = str(app_dir) + os.pathsep + os.environ.get("PATH", "")
     if shutil.which("ffmpeg") is None:
         raise RuntimeError("ไม่พบ ffmpeg ใน PATH กรุณาติดตั้ง ffmpeg ก่อน")
 

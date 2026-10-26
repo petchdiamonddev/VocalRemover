@@ -1,3 +1,4 @@
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 param([Parameter(Mandatory=$false)][string]$Url)
 $python = Join-Path $PSScriptRoot ".venv\Scripts\python.exe"
 if (-not (Test-Path $python)) { $python = "python" }
@@ -6,4 +7,3 @@ if ($Url) {
 } else {
     & $python "$PSScriptRoot\vocal_remover.py" @args
 }
-

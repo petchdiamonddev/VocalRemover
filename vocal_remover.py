@@ -101,7 +101,11 @@ def get_valid_url(url: str | None) -> str:
     """รับและตรวจลิงก์ YouTube ก่อนเริ่มงาน ป้องกันการส่ง URL แปลกปลอม"""
     while True:
         if not url:
-            url = input("วางลิงก์เพลงจาก YouTube: ").strip()
+            try:
+                url = input("วางลิงก์เพลงจาก YouTube: ").strip()
+            except (KeyboardInterrupt, EOFError):
+                print("\nยกเลิกการทำงาน")
+                sys.exit(130)
         parsed = urlparse(url)
         host = parsed.netloc.lower().split(":", 1)[0]
         valid_host = host in {"youtube.com", "www.youtube.com", "m.youtube.com", "youtu.be"}
@@ -165,4 +169,8 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except KeyboardInterrupt:
+        print("\nยกเลิกการทำงาน")
+        sys.exit(130)

@@ -1,9 +1,20 @@
+param(
+    [Parameter(Mandatory=$false, Position=0)]
+    [string]$Url,
+    [Parameter(ValueFromRemainingArguments=$true)]
+    [string[]]$ExtraArgs
+)
+
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-param([Parameter(Mandatory=$false)][string]$Url)
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
 $python = Join-Path $PSScriptRoot ".venv\Scripts\python.exe"
 if (-not (Test-Path $python)) { $python = "python" }
+
+$script = Join-Path $PSScriptRoot "vocal_remover.py"
+
 if ($Url) {
-    & $python "$PSScriptRoot\vocal_remover.py" $Url @args
+    & $python $script $Url @ExtraArgs
 } else {
-    & $python "$PSScriptRoot\vocal_remover.py" @args
+    & $python $script @ExtraArgs
 }
